@@ -16,30 +16,43 @@ Usage:
 from PyConnector import Cache
 
 cache = Cache()
+
 # Set the cache
 cache.Set("test", b"test")
+
 # Get from cache
 cache.Get("test")
+
 # Delete key from cache
 cache.Delete("test")
+
 # Check if cache has key
 cache.HasKey("test")
+
 # Retrieve all keys
 cache.Keys()
+
 # Retrieve amount of all keys in all caches
 cache.SizeAll()
+
 # Retrieve amount of all keys in current cache
 cache.Size()
+
 # Clear entire cache
 cache.Clear()
+
 # Get all geys for all caches
 cache.KeysAll()
+
 # Get ttl for key
 cache.TTL("test")
+
 # Get ttl for all items
 cache.AllTTL()
+
 # Change channel
 # cache.SetChannel(1)
+
 # Disconnect from socket
 cache.Leave()
 ```
