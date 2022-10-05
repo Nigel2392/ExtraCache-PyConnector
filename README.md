@@ -51,7 +51,7 @@ cache.TTL("test")
 cache.AllTTL()
 
 # Change channel
-# cache.SetChannel(1)
+cache.SetChannel(1)
 
 # Disconnect from socket
 cache.Leave()
