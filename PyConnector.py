@@ -70,6 +70,7 @@ class PyConnector:
 
     def receive(self):
         data = self.sock.recv(self.buf_size)
+        print(data)
         data_json = data.decode("utf-8")
         data_dict = json.loads(data_json)
         try:
@@ -183,9 +184,15 @@ class Cache:
         return data["DATA"]["TTL"]
     
     def AllTTL(self):
-        """Get the TTL of all keys in the current cache"""
+        """
+        Get the TTL of all keys in the current cache
+        Requires a lot of memory, use with caution.
+        """
+        old_bufsize = self.conn.buf_size
+        self.conn.buf_size = 256_000 # 256kb buffer size
         self.conn.send(self.conn.message(channel_id=self.channel_id, typ="TTL_ALL"))
         data = self.conn.receive()
+        self.conn.buf_size = old_bufsize
         return data["DATA"]["TTL"]
 
     def Leave(self):
@@ -215,11 +222,18 @@ if __name__ == "__main__":
     print("TTl...", cache.TTL("test"))
     print("Getting...", cache.Get("test"))
     print("AllTTL...", cache.AllTTL())
-    for i in range(1000):
-        print("Setting...", cache.Set("test"+str(i), "VALUE"+str(i)))
-    import hashlib
-    for i in range(1000):
-        print("setting hashed...", cache.Set(hashlib.sha256(("test"+str(i)).encode('utf-8')).hexdigest(), "VALUE"+str(i), 120))
+    cache.SetChannel(1)
+    print("AllTTL...", cache.AllTTL())
+    for i in range(2):
+        cache.SetChannel(i)
+        print("AllTTL...", cache.AllTTL())
+
+    # for i in range(1000):
+    #     print("Setting...", cache.Set("test"+str(i), "VALUE"+str(i)))
+    # import hashlib
+    # for i in range(1000):
+    #     print("setting hashed...", cache.Set(hashlib.sha256(("test"+str(i)).encode('utf-8')).hexdigest(), "VALUE"+str(i), 120))
+
     cache.Leave()
 
 
