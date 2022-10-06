@@ -53,10 +53,6 @@ class PyConnector:
         except socket.error as e:
             raise ConnectionError("PyConnector could not connect to caching server.")
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7c7844c5e87092161153d78e53648ac1e8d90571
     def send(self, data: Message):
         if type(data) != Message:
             raise TypeError("Data must be of type PyConnector.Message")
@@ -139,16 +135,12 @@ class Cache:
         return data["STATUS"] == "OK"
     
     def Keys(self):
-<<<<<<< HEAD
         """
         Get all keys in the current cache
         Requires a lot of memory, so use with caution.
         """
         old_bufsize = self.conn.buf_size
         self.conn.buf_size = 128_000 # 128kb buffer size
-=======
-        """Get all keys in the current cache"""
->>>>>>> 7c7844c5e87092161153d78e53648ac1e8d90571
         self.conn.send(self.conn.message(channel_id=self.channel_id, typ="KEYS"))
         data = self.conn.receive()
         self.conn.buf_size = old_bufsize
@@ -173,16 +165,12 @@ class Cache:
         return data["STATUS"] == "OK"
     
     def KeysAll(self):
-<<<<<<< HEAD
         """
         Get all keys in all caches (Multiple channels)
         Requires a lot of memory, use with caution.
         """
         old_bufsize = self.conn.buf_size
         self.conn.buf_size = 256_000 # 256kb buffer size
-=======
-        """Get all keys in all caches (Multiple channels)"""
->>>>>>> 7c7844c5e87092161153d78e53648ac1e8d90571
         self.conn.send(self.conn.message(channel_id=self.channel_id, typ="KEYSALL"))
         data = self.conn.receive()
         self.conn.buf_size = old_bufsize
